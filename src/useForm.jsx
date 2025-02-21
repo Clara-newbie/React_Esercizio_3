@@ -15,8 +15,13 @@ export default function useForm() {
     setData((prev) => ({ ...prev, [name]: value }));
   }
 
-  return (
-    <form onSubmit={handleFormInput}>
+  return {
+    handleFormInput,
+    data,
+    initialData,
+  };
+  {
+    /* <form onSubmit={handleFormInput}>
       <input
         name={username}
         value={data.username}
@@ -30,6 +35,6 @@ export default function useForm() {
         placeholder="password..."
       />
       <button type="submit">Send</button>
-    </form>
-  );
+    </form> */
+  }
 }
