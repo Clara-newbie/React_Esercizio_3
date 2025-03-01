@@ -1,9 +1,11 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import FilteredList from "./FilteredList";
+import GithubUser from "./GithubUser";
+import { SWRConfig } from "swr";
+
+const fetcher = (url) => fetch(url).then((r) => r.json());
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <FilteredList />
-  </StrictMode>
+  <SWRConfig value={{ fetcher }}>
+    <GithubUser username="mojombo" />
+  </SWRConfig>
 );
