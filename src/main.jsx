@@ -1,11 +1,5 @@
 import { createRoot } from "react-dom/client";
-import GithubUser from "./GithubUser";
-import { SWRConfig } from "swr";
+import ChatBox from "./ChatBox";
+import "./index.css";
 
-const fetcher = (url) => fetch(url).then((r) => r.json());
-
-createRoot(document.getElementById("root")).render(
-  <SWRConfig value={{ fetcher }}>
-    <GithubUser username="mojombo" />
-  </SWRConfig>
-);
+createRoot(document.getElementById("root")).render(<ChatBox />);
