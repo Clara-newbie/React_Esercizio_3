@@ -1,6 +1,6 @@
 import ChatMessage from "./ChatMessage";
 import { useState, useRef } from "react";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 
 export default function ChatApp() {
   const [messages, setMessages] = useState([]);
@@ -18,9 +18,6 @@ export default function ChatApp() {
     const sentText = inputRef.current.value;
 
     // controlli sulla validità dei messaggi inviati dall'utente
-    if (sentText === "") {
-      return;
-    }
     if (sentText.trim() === "") {
       return;
     }
@@ -29,20 +26,12 @@ export default function ChatApp() {
     setMessages((prev) => [...prev, { text: sentText, sender: "user" }]);
 
     inputRef.current.value = ""; // Resetto l'input
-    chatEndRef.current.scrollIntoView({ behavior: "smooth" }); // Scrollo a fine pag
-
-    // Se c'è un errore nel fetch, mostra un messaggio di errore
-    if (error) {
-      alert("Errore nel recupero delle risposte del bot.");
-      return;
-    }
-
     await mutate();
 
     // Simulo un messaggio random di risposta automatica
     setTimeout(() => {
       // Se ci sono risposte disponibili, scegli una risposta casuale
-      if (botAnswers && botAnswers.length > 0) {
+      if (botAnswers) {
         const botResponse =
           botAnswers[Math.floor(Math.random() * botAnswers.length)].text;
 
@@ -54,10 +43,19 @@ export default function ChatApp() {
           { text: "Errore: nessuna risposta disponibile", sender: "bot" },
         ]);
       }
-
-      chatEndRef.current.scrollIntoView({ behavior: "smooth" }); // Scrollo a fine pag
     }, 2000);
   };
+
+  // Scrollo a fine pag
+  useEffect(() => {
+    chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Se c'è un errore nel fetch, mostra un messaggio di errore
+  if (error) {
+    alert("Errore nel recupero delle risposte del bot.");
+    return;
+  }
 
   return (
     <div className="w-fit block m-auto mt-4 p-4">
